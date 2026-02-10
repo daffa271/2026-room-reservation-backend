@@ -1,11 +1,24 @@
+# =========================
 # Build results
+# =========================
 **/bin/
 **/obj/
 
-# User-specific files
+# =========================
+# User-specific / IDE files
+# =========================
 .vs/
 .vscode/
 
+# =========================
+# SQLite database files
+# =========================
+*.db
+*.db-shm
+*.db-wal
+
+# =========================
 # OS files
+# =========================
 .DS_Store
 Thumbs.db

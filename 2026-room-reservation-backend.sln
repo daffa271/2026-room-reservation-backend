@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomReservation.Api", "RoomReservation.Api\RoomReservation.Api.csproj", "{D7BD2E1F-6F32-832C-8B45-1760CAF8C977}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7BD2E1F-6F32-832C-8B45-1760CAF8C977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7BD2E1F-6F32-832C-8B45-1760CAF8C977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7BD2E1F-6F32-832C-8B45-1760CAF8C977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7BD2E1F-6F32-832C-8B45-1760CAF8C977}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5790734F-DEB8-40EB-BCD3-797864155BCB}
+	EndGlobalSection
+EndGlobal
