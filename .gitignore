@@ -1,0 +1,11 @@
+# Build results
+**/bin/
+**/obj/
+
+# User-specific files
+.vs/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
