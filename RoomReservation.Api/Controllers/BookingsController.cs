@@ -17,7 +17,7 @@ public class BookingsController : ControllerBase
         _db = db;
     }
 
-    // GET: api/Bookings?status=Pending&roomId=1
+    // GET: api/Bookings?status=0&roomId=1
     [HttpGet]
     public async Task<ActionResult<List<BookingResponseDto>>> GetAll(
         [FromQuery] BookingStatus? status,
@@ -28,11 +28,9 @@ public class BookingsController : ControllerBase
             .Include(b => b.Room)
             .AsQueryable();
 
-        // Filter status (optional)
         if (status.HasValue)
             query = query.Where(b => b.Status == status.Value);
 
-        // Filter roomId (optional)
         if (roomId.HasValue)
             query = query.Where(b => b.RoomId == roomId.Value);
 
@@ -87,10 +85,13 @@ public class BookingsController : ControllerBase
         if (dto.EndTime <= dto.StartTime)
             return BadRequest("EndTime harus lebih besar dari StartTime.");
 
-        // Pastikan room ada
+        // Pastikan room ada + aktif
         var room = await _db.Rooms.FirstOrDefaultAsync(r => r.Id == dto.RoomId);
         if (room is null)
             return BadRequest("RoomId tidak valid (ruangan tidak ditemukan).");
+
+        if (!room.IsActive)
+            return BadRequest("Ruangan tidak aktif, tidak bisa dibooking.");
 
         // Cek bentrok jadwal
         var hasConflict = await _db.Bookings.AnyAsync(b =>
@@ -145,9 +146,13 @@ public class BookingsController : ControllerBase
         if (dto.EndTime <= dto.StartTime)
             return BadRequest("EndTime harus lebih besar dari StartTime.");
 
+        // room harus ada + aktif
         var room = await _db.Rooms.FirstOrDefaultAsync(r => r.Id == dto.RoomId);
         if (room is null)
             return BadRequest("RoomId tidak valid (ruangan tidak ditemukan).");
+
+        if (!room.IsActive)
+            return BadRequest("Ruangan tidak aktif, tidak bisa dipindah / diupdate untuk booking.");
 
         // Exclude dirinya sendiri
         var hasConflict = await _db.Bookings.AnyAsync(b =>
@@ -178,6 +183,11 @@ public class BookingsController : ControllerBase
     {
         var booking = await _db.Bookings.FirstOrDefaultAsync(b => b.Id == id);
         if (booking is null) return NotFound();
+
+        // Opsional (recommended): tidak boleh approve kalau room nonaktif
+        var room = await _db.Rooms.FirstOrDefaultAsync(r => r.Id == booking.RoomId);
+        if (room is not null && !room.IsActive && dto.Status == BookingStatus.Approved)
+            return BadRequest("Tidak bisa approve: ruangan sudah tidak aktif.");
 
         booking.Status = dto.Status;
         await _db.SaveChangesAsync();
